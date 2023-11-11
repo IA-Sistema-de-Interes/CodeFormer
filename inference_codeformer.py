@@ -98,7 +98,7 @@ if __name__ == '__main__':
         audio = vidreader.get_audio()
         fps = vidreader.get_fps() if args.save_video_fps is None else args.save_video_fps   
         video_name = os.path.basename(args.input_path)[:-4]
-        result_root = f'results/{video_name}_{w}'
+        result_root = f'results/{video_name}'
         input_video = True
         vidreader.close()
     else: # input img folder
