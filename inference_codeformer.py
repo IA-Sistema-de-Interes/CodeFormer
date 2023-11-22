@@ -3,6 +3,7 @@ import cv2
 import argparse
 import glob
 import torch
+import shutil
 from torchvision.transforms.functional import normalize
 from basicsr.utils import imwrite, img2tensor, tensor2img
 from basicsr.utils.download_util import load_file_from_url
@@ -16,6 +17,15 @@ pretrain_model_url = {
     'restoration': 'https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth',
 }
 
+# Ruta de la carpeta que quieres borrar y recrear
+carpeta_a_borrar_y_recrear = '/content/CodeFormer/results'
+
+# Eliminar la carpeta y su contenido
+shutil.rmtree(carpeta_a_borrar_y_recrear, ignore_errors=True)
+
+# Crear la carpeta
+os.makedirs(carpeta_a_borrar_y_recrear, exist_ok=True)    
+    
 def set_realesrgan():
     from basicsr.archs.rrdbnet_arch import RRDBNet
     from basicsr.utils.realesrgan_utils import RealESRGANer
@@ -264,11 +274,12 @@ if __name__ == '__main__':
         height, width = video_frames[0].shape[:2]
         if args.suffix is not None:
             video_name = f'{video_name}_{args.suffix}.png'
-        save_restore_path = os.path.join(result_root, f'{video_name}.mp4')
+        save_restore_path = os.path.join('/content/CodeFormer/temp', f'{video_name}.mp4')
         vidwriter = VideoWriter(save_restore_path, height, width, fps, audio)
          
         for f in video_frames:
             vidwriter.write_frame(f)
         vidwriter.close()
 
-    print(f'\nAll results are saved in {result_root}')
+
+    print('\nAll results are saved in /content/CodeFormer/temp')
